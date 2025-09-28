@@ -865,7 +865,7 @@ const PythonLearningGame = () => {
 
             <p className="text-base md:text-lg mb-6 text-gray-300 leading-relaxed">
               Embark on an epic coding journey! Master Python magic through
-              <span className="text-yellow-400 font-bold"> 10 challenging quests</span>. Level up your hero, collect coins, and unlock achievements!
+              <span className="text-yellow-400 font-bold"> 30 challenging quests</span>. Level up your hero, collect coins, and unlock achievements!
             </p>
 
             {/* Feature highlights */}
