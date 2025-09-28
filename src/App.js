@@ -35,6 +35,7 @@ const PythonLearningGame = () => {
   const [showFloatingPoints, setShowFloatingPoints] = useState([]);
 
   const levels = [
+    // 1-5: Printing & Variables
     {
       id: 1,
       title: "Magic Print Spell",
@@ -53,15 +54,15 @@ const PythonLearningGame = () => {
     },
     {
       id: 2,
-      title: "Hero Name Storage",
+      title: "Store Hero Name",
       world: "🏝️ Beginner Island",
       difficulty: "⭐",
       type: "fill_blank",
-      question: "Store your hero name in a variable",
+      question: "Create a variable called 'name' to store your hero’s title.",
       template: "___ = 'Wizard'\\nprint(___)",
       answer: "name",
       expectedOutput: "Wizard",
-      hint: "Variables store information. What would you call a hero's identifier?",
+      hint: "Use the word 'name' as your variable to keep it simple.",
       points: 120,
       xpReward: 30,
       coins: 20,
@@ -69,153 +70,513 @@ const PythonLearningGame = () => {
     },
     {
       id: 3,
-      title: "Potion Numbers",
+      title: "Print Number",
       world: "🏝️ Beginner Island",
       difficulty: "⭐",
       type: "fill_blank",
-      question: "Add two magic numbers together",
-      template: "result = 10 ___ 5\\nprint(result)",
-      answer: "+",
-      expectedOutput: "15",
-      hint: "What symbol do you use to add numbers together?",
-      points: 110,
-      xpReward: 28,
-      coins: 18,
+      question: "Print the number 42.",
+      template: "print(___)",
+      answer: "42",
+      expectedOutput: "42",
+      hint: "Numbers do not need quotes.",
+      points: 100,
+      xpReward: 20,
+      coins: 10,
       timeLimit: 40
     },
     {
       id: 4,
-      title: "Crystal List Quest",
-      world: "💎 Crystal Caves",
-      difficulty: "⭐⭐",
-      type: "multiple_choice",
-      question: "Which is the correct way to create a list of crystals?",
-      options: [
-        "crystals = ['red', 'blue', 'green']",
-        "crystals = ('red', 'blue', 'green')",
-        "crystals = red, blue, green",
-        "crystals = {red: blue: green}"
-      ],
-      correctIndex: 0,
-      expectedOutput: "['red', 'blue', 'green']",
-      hint: "Lists use square brackets [ ] to hold multiple items",
-      points: 150,
-      xpReward: 40,
-      coins: 25,
-      timeLimit: 60
-    },
-    {
-      id: 5,
-      title: "Cave Counter",
-      world: "💎 Crystal Caves",
-      difficulty: "⭐⭐",
-      type: "multiple_choice",
-      question: "How do you count from 0 to 2?",
-      options: [
-        "for i in range(3):",
-        "for i in count(3):",
-        "for i in list(3):",
-        "for i in numbers(3):"
-      ],
-      correctIndex: 0,
-      expectedOutput: "0, 1, 2",
-      hint: "The range() function creates a sequence of numbers",
+      title: "Input Name",
+      world: "🏝️ Beginner Island",
+      difficulty: "⭐",
+      type: "fill_blank",
+      question: "Take input from the user and print it.",
+      template: "name = ___('Enter your name: ')\\nprint(name)",
+      answer: "input",
+      expectedOutput: "Whatever the user types",
+      hint: "Use input() to read user input.",
       points: 140,
-      xpReward: 35,
-      coins: 22,
+      xpReward: 36,
+      coins: 24,
       timeLimit: 55
     },
     {
-      id: 6,
-      title: "Dragon Condition",
-      world: "🐉 Dragon's Lair",
-      difficulty: "⭐⭐⭐",
+      id: 5,
+      title: "Variable Reassign",
+      world: "🏝️ Beginner Island",
+      difficulty: "⭐",
       type: "fill_blank",
-      question: "Check if the dragon is defeated",
-      template: "___ dragon_hp == 0:\\n    print('Victory!')",
-      answer: "if",
-      expectedOutput: "Victory!",
-      hint: "What keyword do you use to check a condition?",
-      points: 180,
-      xpReward: 45,
+      question: "Change x from 5 to 10.",
+      template: "x = 5\\nx = ___\\nprint(x)",
+      answer: "10",
+      expectedOutput: "10",
+      hint: "Just assign a new value.",
+      points: 120,
+      xpReward: 28,
+      coins: 18,
+      timeLimit: 50
+    },
+
+    // 6-10: Arithmetic Operators
+    {
+      id: 6,
+      title: "Add Numbers",
+      world: "🏝️ Beginner Island",
+      difficulty: "⭐",
+      type: "fill_blank",
+      question: "Add 7 and 3.",
+      template: "result = 7 ___ 3\\nprint(result)",
+      answer: "+",
+      expectedOutput: "10",
+      hint: "Use + for addition.",
+      points: 110,
+      xpReward: 25,
+      coins: 15,
+      timeLimit: 40
+    },
+    {
+      id: 7,
+      title: "Subtract Numbers",
+      world: "🏝️ Beginner Island",
+      difficulty: "⭐",
+      type: "fill_blank",
+      question: "Subtract 5 from 12.",
+      template: "result = 12 ___ 5\\nprint(result)",
+      answer: "-",
+      expectedOutput: "7",
+      hint: "Use - for subtraction.",
+      points: 110,
+      xpReward: 25,
+      coins: 15,
+      timeLimit: 40
+    },
+    {
+      id: 8,
+      title: "Multiply Numbers",
+      world: "🏝️ Beginner Island",
+      difficulty: "⭐",
+      type: "fill_blank",
+      question: "Multiply 6 by 4.",
+      template: "result = 6 ___ 4\\nprint(result)",
+      answer: "*",
+      expectedOutput: "24",
+      hint: "Use * for multiplication.",
+      points: 115,
+      xpReward: 26,
+      coins: 16,
+      timeLimit: 45
+    },
+    {
+      id: 9,
+      title: "Divide Numbers",
+      world: "🏝️ Beginner Island",
+      difficulty: "⭐",
+      type: "fill_blank",
+      question: "Divide 20 by 4.",
+      template: "result = 20 ___ 4\\nprint(result)",
+      answer: "/",
+      expectedOutput: "5.0",
+      hint: "Use / for division.",
+      points: 120,
+      xpReward: 28,
+      coins: 18,
+      timeLimit: 45
+    },
+    {
+      id: 10,
+      title: "Modulus",
+      world: "🏝️ Beginner Island",
+      difficulty: "⭐",
+      type: "fill_blank",
+      question: "Get the remainder of 10 divided by 3.",
+      template: "result = 10 ___ 3\\nprint(result)",
+      answer: "%",
+      expectedOutput: "1",
+      hint: "Use % to find the remainder.",
+      points: 125,
+      xpReward: 30,
+      coins: 20,
+      timeLimit: 45
+    },
+
+    // 11-15: Strings and concatenation
+    {
+      id: 11,
+      title: "String Join",
+      world: "💎 Crystal Caves",
+      difficulty: "⭐⭐",
+      type: "fill_blank",
+      question: "Join 'Hello' and 'World'.",
+      template: "result = 'Hello' ___ 'World'\\nprint(result)",
+      answer: "+",
+      expectedOutput: "HelloWorld",
+      hint: "Use + to join strings.",
+      points: 145,
+      xpReward: 38,
+      coins: 25,
+      timeLimit: 55
+    },
+    {
+      id: 12,
+      title: "MCQ: String Uppercase",
+      world: "💎 Crystal Caves",
+      difficulty: "⭐⭐",
+      type: "multiple_choice",
+      question: "Which method converts 'python' to uppercase?",
+      options: [
+        "word.upper()",
+        "word.upcase()",
+        "word.toUpper()",
+        "word.capitalize()"
+      ],
+      correctIndex: 0,
+      expectedOutput: "PYTHON",
+      hint: "In Python, the method to convert letters to uppercase is short and simple.",
+      points: 150,
+      xpReward: 40,
+      coins: 26,
+      timeLimit: 60
+    },
+    {
+      id: 13,
+      title: "MCQ: String Slice",
+      world: "💎 Crystal Caves",
+      difficulty: "⭐⭐",
+      type: "multiple_choice",
+      question: "How do you get the first 3 letters of 'Python'?",
+      options: [
+        "word[0:3]",
+        "word[:3]",
+        "word[0-3]",
+        "word[1:4]"
+      ],
+      correctIndex: 0,
+      expectedOutput: "Pyt",
+      hint: "Use slicing with start:end format, indexing starts at 0.",
+      points: 155,
+      xpReward: 42,
+      coins: 27,
+      timeLimit: 60
+    },
+    {
+      id: 14,
+      title: "MCQ: List Creation",
+      world: "💎 Crystal Caves",
+      difficulty: "⭐⭐",
+      type: "multiple_choice",
+      question: "Which creates a list of numbers 1, 2, 3?",
+      options: [
+        "nums = [1, 2, 3]",
+        "nums = (1, 2, 3)",
+        "nums = 1, 2, 3",
+        "nums = {1:2:3}"
+      ],
+      correctIndex: 0,
+      expectedOutput: "[1, 2, 3]",
+      hint: "Lists use square brackets.",
+      points: 160,
+      xpReward: 44,
+      coins: 28,
+      timeLimit: 60
+    },
+    {
+      id: 15,
+      title: "MCQ: Access List",
+      world: "💎 Crystal Caves",
+      difficulty: "⭐⭐",
+      type: "multiple_choice",
+      question: "Print second item of [5,10,15]:",
+      options: [
+        "nums[0]",
+        "nums[1]",
+        "nums[2]",
+        "nums[3]"
+      ],
+      correctIndex: 1,
+      expectedOutput: "10",
+      hint: "Indexing starts at 0.",
+      points: 165,
+      xpReward: 46,
+      coins: 29,
+      timeLimit: 60
+    },
+
+    // 16-20: Loops
+    {
+      id: 16,
+      title: "List Append",
+      world: "💎 Crystal Caves",
+      difficulty: "⭐⭐",
+      type: "fill_blank",
+      question: "Add 4 to list [1,2,3].",
+      template: "nums = [1, 2, 3]\\nnums.___(4)\\nprint(nums)",
+      answer: "append",
+      expectedOutput: "[1, 2, 3, 4]",
+      hint: "Use append() to add items.",
+      points: 170,
+      xpReward: 48,
       coins: 30,
       timeLimit: 65
     },
     {
-      id: 7,
-      title: "Treasure Key",
+      id: 17,
+      title: "MCQ: For Loop",
       world: "🐉 Dragon's Lair",
       difficulty: "⭐⭐⭐",
       type: "multiple_choice",
-      question: "What unlocks the treasure chest?",
+      question: "Print numbers 0-4?",
       options: [
-        "if key == 'golden':",
-        "if key = 'golden':",
-        "if key === 'golden':",
-        "if key is 'golden':"
+        "for i in range(5): print(i)",
+        "for i in 5: print(i)",
+        "for i to 5: print(i)",
+        "loop i in range(5): print(i)"
       ],
       correctIndex: 0,
-      expectedOutput: "Treasure unlocked!",
-      hint: "Use == to compare values, not = (which assigns)",
-      points: 170,
-      xpReward: 42,
-      coins: 28,
+      expectedOutput: "0 1 2 3 4",
+      hint: "Use range() for sequences.",
+      points: 175,
+      xpReward: 50,
+      coins: 32,
       timeLimit: 70
     },
     {
-      id: 8,
-      title: "Forest Function",
-      world: "🌲 Magic Forest",
-      difficulty: "⭐⭐⭐⭐",
+      id: 18,
+      title: "While Loop",
+      world: "🐉 Dragon's Lair",
+      difficulty: "⭐⭐⭐",
       type: "fill_blank",
-      question: "Create a function to cast spells",
-      template: "___ cast_spell():\\n    return 'Abracadabra!'",
-      answer: "def",
-      expectedOutput: "Abracadabra!",
-      hint: "What keyword defines a function in Python?",
-      points: 200,
-      xpReward: 50,
-      coins: 35,
-      timeLimit: 80
+      question: "Repeat until count reaches 3.",
+      template: "count = 0\\n___ count < 3:\\n    print(count)\\n    count += 1",
+      answer: "while",
+      expectedOutput: "0\\n1\\n2",
+      hint: "Use while for repeating until a condition is false.",
+      points: 180,
+      xpReward: 52,
+      coins: 34,
+      timeLimit: 70
     },
     {
-      id: 9,
-      title: "Spell Length",
-      world: "🌲 Magic Forest",
-      difficulty: "⭐⭐⭐⭐",
+      id: 19,
+      title: "MCQ: If Statement",
+      world: "🐉 Dragon's Lair",
+      difficulty: "⭐⭐⭐",
       type: "multiple_choice",
-      question: "How do you find the length of a spell list?",
+      question: "Print 'Big' if x>5. Which is correct?",
       options: [
-        "len(spells)",
-        "length(spells)",
-        "size(spells)",
-        "count(spells)"
+        "if x > 5 print('Big')",
+        "if x > 5: print('Big')",
+        "if x > 5 then print('Big')",
+        "if x > 5 -> print('Big')"
       ],
-      correctIndex: 0,
-      expectedOutput: "3",
-      hint: "It's a short, 3-letter function name",
-      points: 160,
-      xpReward: 38,
-      coins: 26,
+      correctIndex: 1,
+      expectedOutput: "Big",
+      hint: "Use colon after the condition.",
+      points: 185,
+      xpReward: 54,
+      coins: 35,
       timeLimit: 75
     },
     {
-      id: 10,
-      title: "Final Boss Battle",
+  id: 20,
+  title: "MCQ: If Else",
+  world: "🐉 Dragon's Lair",
+  difficulty: "⭐⭐⭐",
+  type: "multiple_choice",
+  question: "Which code correctly prints 'Even' if number % 2 == 0, else prints 'Odd'?",
+  options: [
+    "if number % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')",
+    "if number % 2 == 0: print('Even') else: print('Odd')",
+    "if number % 2 == 0 then: print('Even') else: print('Odd')",
+    "if number % 2 == 0: print('Even') otherwise: print('Odd')"
+  ],
+  correctIndex: 0,
+  expectedOutput: "Even  // if number is divisible by 2\nOdd   // if number is not divisible by 2",
+  hint: "In Python, else must be on a new line after the if block.",
+  points: 190,
+  xpReward: 56,
+  coins: 36,
+  timeLimit: 75
+},
+
+
+    // 21-25: Logic & Functions
+    {
+      id: 21,
+      title: "Logical AND",
+      world: "🌲 Magic Forest",
+      difficulty: "⭐⭐⭐⭐",
+      type: "fill_blank",
+      question: "Check if age >=18 AND has_id is True.",
+      template: "if age >= 18 ___ has_id:\\n    print('Access granted')",
+      answer: "and",
+      expectedOutput: "Access granted",
+      hint: "Use 'and' to combine conditions.",
+      points: 195,
+      xpReward: 58,
+      coins: 37,
+      timeLimit: 80
+    },
+    {
+      id: 22,
+      title: "Logical OR",
+      world: "🌲 Magic Forest",
+      difficulty: "⭐⭐⭐⭐",
+      type: "fill_blank",
+      question: "Check if x==0 OR y==0.",
+      template: "if x == 0 ___ y == 0:\\n    print('Zero found')",
+      answer: "or",
+      expectedOutput: "Zero found",
+      hint: "Use 'or' if any condition can be True.",
+      points: 200,
+      xpReward: 60,
+      coins: 38,
+      timeLimit: 80
+    },
+    {
+      id: 23,
+      title: "Not Operator",
+      world: "🌲 Magic Forest",
+      difficulty: "⭐⭐⭐⭐",
+      type: "fill_blank",
+      question: "Check if is_raining is False.",
+      template: "if ___ is_raining:\\n    print('No rain')",
+      answer: "not",
+      expectedOutput: "No rain",
+      hint: "Use not to flip True/False.",
+      points: 205,
+      xpReward: 62,
+      coins: 39,
+      timeLimit: 80
+    },
+    {
+      id: 24,
+      title: "Define Function",
+      world: "🌲 Magic Forest",
+      difficulty: "⭐⭐⭐⭐",
+      type: "fill_blank",
+      question: "Define a function greet with parameter name.",
+      template: "___ greet(name):\\n    print('Hello', name)",
+      answer: "def",
+      expectedOutput: "Hello <name>",
+      hint: "Functions start with def.",
+      points: 210,
+      xpReward: 64,
+      coins: 40,
+      timeLimit: 85
+    },
+    {
+      id: 25,
+      title: "MCQ: Function Call",
       world: "☁️ Sky Temple",
       difficulty: "⭐⭐⭐⭐⭐",
       type: "multiple_choice",
-      question: "Complete the ultimate spell to defeat the boss:",
+      question: "Which calls greet('Alice') correctly?",
       options: [
-        "def ultimate_spell(power): return power * 2",
-        "function ultimate_spell(power) { return power * 2 }",
-        "ultimate_spell(power) = power * 2",
-        "create ultimate_spell with power return power * 2"
+        "greet('Alice')",
+        "call greet('Alice')",
+        "greet = 'Alice'",
+        "def greet('Alice')"
       ],
       correctIndex: 0,
-      expectedOutput: "Boss defeated with ultimate power!",
-      hint: "Functions in Python start with 'def' and use colons",
-      points: 300,
+      expectedOutput: "Hello Alice",
+      hint: "Use the function name followed by parentheses to call it.",
+      points: 215,
+      xpReward: 66,
+      coins: 41,
+      timeLimit: 85
+    },
+    // 26-30: Modules, Comments, Misc Basics
+    {
+      id: 26,
+      title: "Import Module",
+      world: "☁️ Sky Temple",
+      difficulty: "⭐⭐⭐⭐⭐",
+      type: "fill_blank",
+      question: "Import the math module.",
+      template: "___ math",
+      answer: "import",
+      expectedOutput: "Module imported",
+      hint: "Use import followed by module name.",
+      points: 220,
+      xpReward: 68,
+      coins: 42,
+      timeLimit: 85
+    },
+    {
+      id: 27,
+      title: "Use Math Function",
+      world: "☁️ Sky Temple",
+      difficulty: "⭐⭐⭐⭐⭐",
+      type: "fill_blank",
+      question: "Print square root of 16 using math module.",
+      template: "import math\\nprint(math.___(16))",
+      answer: "sqrt",
+      expectedOutput: "4.0",
+      hint: "The square root function in math is sqrt().",
+      points: 225,
+      xpReward: 70,
+      coins: 44,
+      timeLimit: 85
+    },
+    {
+      id: 28,
+      title: "MCQ: Comment",
+      world: "☁️ Sky Temple",
+      difficulty: "⭐⭐⭐⭐⭐",
+      type: "multiple_choice",
+      question: "Which is a correct comment in Python?",
+      options: [
+        "// This is a comment",
+        "# This is a comment",
+        "<!-- Comment -->",
+        "/* Comment */"
+      ],
+      correctIndex: 1,
+      expectedOutput: "No output, just comment",
+      hint: "Python uses # for single-line comments.",
+      points: 230,
+      xpReward: 72,
+      coins: 45,
+      timeLimit: 90
+    },
+    {
+      id: 29,
+      title: "MCQ: Random Number",
+      world: "☁️ Sky Temple",
+      difficulty: "⭐⭐⭐⭐⭐",
+      type: "multiple_choice",
+      question: "Generate a random number between 1 and 10:",
+      options: [
+        "random.randint(1,10)",
+        "random(1,10)",
+        "randint.random(1,10)",
+        "rand(1,10)"
+      ],
+      correctIndex: 0,
+      expectedOutput: "Random number between 1 and 10",
+      hint: "Use randint from random module.",
+      points: 235,
+      xpReward: 74,
+      coins: 46,
+      timeLimit: 90
+    },
+    {
+      id: 30,
+      title: "MCQ: Correct Syntax",
+      world: "☁️ Sky Temple",
+      difficulty: "⭐⭐⭐⭐⭐",
+      type: "multiple_choice",
+      question: "Which is the correct Python syntax?",
+      options: [
+        "for i in range(5) print(i)",
+        "for i in range(5): print(i)",
+        "for i to range(5): print(i)",
+        "for i = 0; i<5; i++: print(i)"
+      ],
+      correctIndex: 1,
+      expectedOutput: "0 1 2 3 4",
+      hint: "Python uses colons to start code blocks.",
+      points: 240,
       xpReward: 75,
       coins: 50,
       timeLimit: 90
@@ -255,7 +616,7 @@ const PythonLearningGame = () => {
 
   const checkAchievements = () => {
     const newAchievements = [];
-    
+
     if (currentLevel >= 1 && !achievements.includes('first_spell')) {
       newAchievements.push('first_spell');
     }
@@ -285,7 +646,7 @@ const PythonLearningGame = () => {
     setStreak(0);
     triggerFeedback(false, "⏰ Time's up! You need to be faster!");
     setOutput("Time's up! ⏰");
-    
+
     if (lives <= 1) {
       setTimeout(() => setGameState('lost'), 1500);
     } else {
@@ -302,9 +663,9 @@ const PythonLearningGame = () => {
       x: Math.random() * 200 - 100,
       y: 0
     };
-    
+
     setShowFloatingPoints(prev => [...prev, newFloatingPoint]);
-    
+
     setTimeout(() => {
       setShowFloatingPoints(prev => prev.filter(fp => fp.id !== id));
     }, 2000);
@@ -326,7 +687,7 @@ const PythonLearningGame = () => {
       }
       setTimeout(() => setScreenShake(false), 600);
     }
-    
+
     setTimeout(() => {
       setShowFeedback(null);
       setFeedbackMessage('');
@@ -341,8 +702,8 @@ const PythonLearningGame = () => {
   const activatePowerUp = (type) => {
     if (powerUps[type] > 0) {
       setPowerUps(prev => ({ ...prev, [type]: prev[type] - 1 }));
-      
-      switch(type) {
+
+      switch (type) {
         case 'extraLife':
           setLives(prev => Math.min(prev + 1, 5));
           break;
@@ -381,14 +742,14 @@ const PythonLearningGame = () => {
       const earnedPoints = Math.floor((currentChallenge.points + timeBonus) * bonusMultiplier);
       const earnedCoins = currentChallenge.coins + (combo * 2);
       const xpEarned = currentChallenge.xpReward * (powerUps.doubleXP > 0 ? 2 : 1);
-      
+
       // showFloatingPoint(`+${earnedPoints}`, 'points');
       // showFloatingPoint(`+${earnedCoins}`, 'coins');
       // showFloatingPoint(`+${xpEarned}`, 'xp');
       // if (combo > 0) {
       //   showFloatingPoint(`${combo + 1}x COMBO!`, 'combo');
       // }
-      
+
       setScore(prev => prev + earnedPoints);
       setXp(prev => prev + xpEarned);
       setCoins(prev => prev + earnedCoins);
@@ -398,7 +759,7 @@ const PythonLearningGame = () => {
         setBestStreak(current => Math.max(current, newStreak));
         return newStreak;
       });
-      
+
       const successMessages = [
         '🎉 Excellent! You\'re a coding wizard!',
         '✨ Perfect! Your Python skills are growing!',
@@ -408,10 +769,10 @@ const PythonLearningGame = () => {
         '🎯 Bull\'s eye! Coding like a pro!'
       ];
       const randomMessage = successMessages[Math.floor(Math.random() * successMessages.length)];
-      
+
       setOutput(currentChallenge.expectedOutput + ' ✨');
       triggerFeedback(true, randomMessage);
-      
+
       if (powerUps.doubleXP > 0) {
         setPowerUps(prev => ({ ...prev, doubleXP: prev.doubleXP - 1 }));
       }
@@ -432,7 +793,7 @@ const PythonLearningGame = () => {
       setLives(prev => prev - 1);
       setCombo(0);
       setStreak(0);
-      
+
       const wrongMessages = [
         '❌ Not quite right! Think it through again!',
         '🤔 Close, but not correct! Give it another try!',
@@ -442,10 +803,10 @@ const PythonLearningGame = () => {
         '⚠️ Oops! Double-check your answer!'
       ];
       const randomMessage = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
-      
+
       setOutput('Try again! ❌');
       triggerFeedback(false, randomMessage);
-      
+
       if (lives <= 1) {
         setTimeout(() => setGameState('lost'), 1500);
       }
@@ -514,7 +875,7 @@ const PythonLearningGame = () => {
               <p className="text-xs md:text-sm">Best Streak</p>
             </div>
           </div>
-          <button 
+          <button
             onClick={resetGame}
             className="bg-yellow-500 hover:bg-yellow-600 text-black px-6 md:px-10 py-3 md:py-4 rounded-xl font-bold text-lg md:text-xl transition-colors"
           >
@@ -536,7 +897,7 @@ const PythonLearningGame = () => {
             <p className="text-2xl md:text-3xl font-bold mb-2">Score: {score}</p>
             <p className="text-base md:text-lg">Best Streak: {bestStreak}</p>
           </div>
-          <button 
+          <button
             onClick={resetGame}
             className="bg-red-500 hover:bg-red-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold text-base md:text-lg transition-colors"
           >
@@ -555,8 +916,8 @@ const PythonLearningGame = () => {
           className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50 font-bold text-2xl animate-bounce
             ${fp.type === 'points' ? 'text-yellow-400' :
               fp.type === 'coins' ? 'text-green-400' :
-              fp.type === 'xp' ? 'text-purple-400' :
-              'text-orange-400'
+                fp.type === 'xp' ? 'text-purple-400' :
+                  'text-orange-400'
             }`}
           style={{
             transform: `translate(${fp.x}px, ${fp.y - 50}px)`,
@@ -570,8 +931,8 @@ const PythonLearningGame = () => {
       {showFeedback && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-40 pointer-events-none">
           <div className={`text-center p-8 rounded-3xl max-w-lg mx-4 animate-bounce relative
-            ${showFeedback === 'success' 
-              ? 'bg-gradient-to-r from-green-500 to-emerald-500 shadow-green-500/50' 
+            ${showFeedback === 'success'
+              ? 'bg-gradient-to-r from-green-500 to-emerald-500 shadow-green-500/50'
               : 'bg-gradient-to-r from-red-500 to-rose-500 shadow-red-500/50'
             } shadow-2xl`}>
             <div className={`text-6xl md:text-8xl mb-4 
@@ -585,7 +946,7 @@ const PythonLearningGame = () => {
             <p className="text-lg md:text-xl text-white/90">
               {feedbackMessage}
             </p>
-            
+
             {showFeedback === 'success' && (
               <>
                 <div className="absolute -top-4 -left-4 text-yellow-400 text-3xl animate-bounce">⭐</div>
@@ -594,18 +955,18 @@ const PythonLearningGame = () => {
                 <div className="absolute -bottom-2 -right-4 text-yellow-400 text-2xl animate-bounce">⚡</div>
               </>
             )}
-            
+
             {showFeedback === 'wrong' && (
               <div className="absolute inset-0 border-4 border-red-400 rounded-3xl animate-pulse"></div>
             )}
           </div>
         </div>
       )}
-      
+
       <div className="bg-black/20 backdrop-blur-sm p-3 md:p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <button 
+            <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
               className="md:hidden mr-3 p-2 rounded-lg bg-white/10"
             >
@@ -617,14 +978,14 @@ const PythonLearningGame = () => {
               <span className="sm:hidden">PyQuest</span>
             </h1>
           </div>
-          
+
           <div className="hidden md:flex items-center space-x-6">
             <div className="bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-3 rounded-full">
               <span className="text-lg font-bold">Hero Level {playerLevel}</span>
               <div className="w-24 bg-gray-700 rounded-full h-2 mt-1">
-                <div 
-                  className="bg-yellow-400 h-2 rounded-full transition-all duration-500" 
-                  style={{width: `${xpProgress}%`}} 
+                <div
+                  className="bg-yellow-400 h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${xpProgress}%` }}
                 />
               </div>
             </div>
@@ -637,10 +998,10 @@ const PythonLearningGame = () => {
               <span className="text-2xl font-bold">{coins}</span>
             </div>
             <div className="flex items-center">
-              {Array.from({length: 5}).map((_, i) => (
-                <Heart 
-                  key={i} 
-                  className={`w-8 h-8 ${i < lives ? 'text-red-400 fill-current' : 'text-gray-600'}`} 
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Heart
+                  key={i}
+                  className={`w-8 h-8 ${i < lives ? 'text-red-400 fill-current' : 'text-gray-600'}`}
                 />
               ))}
             </div>
@@ -662,9 +1023,9 @@ const PythonLearningGame = () => {
           <div className="flex items-center">
             <span className="mr-2">Level {playerLevel}</span>
             <div className="w-16 bg-gray-700 rounded-full h-1">
-              <div 
-                className="bg-yellow-400 h-1 rounded-full transition-all duration-500" 
-                style={{width: `${xpProgress}%`}} 
+              <div
+                className="bg-yellow-400 h-1 rounded-full transition-all duration-500"
+                style={{ width: `${xpProgress}%` }}
               />
             </div>
           </div>
@@ -684,13 +1045,13 @@ const PythonLearningGame = () => {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div className="bg-purple-500/20 p-4 rounded-xl">
                 <h3 className="font-bold mb-2">🏆 Achievements</h3>
                 <p className="text-sm text-gray-300">{achievements.length}/{achievementList.length} unlocked</p>
               </div>
-              
+
               <div className="bg-blue-500/20 p-4 rounded-xl">
                 <h3 className="font-bold mb-2">⚡ Power-ups</h3>
                 <div className="space-y-2 text-sm">
@@ -699,8 +1060,8 @@ const PythonLearningGame = () => {
                   <div>Hint Boost: {powerUps.hintBoost}</div>
                 </div>
               </div>
-              
-              <button 
+
+              <button
                 onClick={() => setSoundEnabled(!soundEnabled)}
                 className="w-full bg-gray-700 p-4 rounded-xl flex items-center justify-between"
               >
@@ -719,7 +1080,7 @@ const PythonLearningGame = () => {
             <h2 className="text-lg md:text-2xl font-bold">{currentChallenge.title}</h2>
             <p className="text-sm md:text-base text-gray-300">{currentChallenge.world} • {currentChallenge.difficulty}</p>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <div className={`px-4 py-2 rounded-full font-bold ${timeLeft <= 10 ? 'bg-red-500/20 text-red-300 animate-pulse' : 'bg-blue-500/20'}`}>
               ⏱️ {timeLeft}s
@@ -780,7 +1141,7 @@ const PythonLearningGame = () => {
                 >
                   💡 {showHint ? 'Hide Hint' : `Show Hint (${hintsRemaining} left)`}
                 </button>
-                
+
                 <div className="flex gap-2">
                   <button
                     onClick={() => activatePowerUp('timeFreeze')}
@@ -885,21 +1246,19 @@ const PythonLearningGame = () => {
                   const isCompleted = index < currentLevel;
                   const isCurrent = index === currentLevel;
                   const isLocked = index > currentLevel;
-                  
+
                   return (
-                    <div key={level.id} className={`flex items-center p-2 md:p-3 rounded-xl transition-colors ${
-                      isCompleted ? 'bg-green-500/20 border border-green-500/50' :
-                      isCurrent ? 'bg-yellow-500/20 border border-yellow-500/50' :
-                      'bg-gray-500/20'
-                    }`}>
-                      <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center mr-3 md:mr-4 font-bold text-sm ${
-                        isCompleted ? 'bg-green-500 text-white' :
-                        isCurrent ? 'bg-yellow-500 text-black' :
-                        'bg-gray-600 text-gray-400'
+                    <div key={level.id} className={`flex items-center p-2 md:p-3 rounded-xl transition-colors ${isCompleted ? 'bg-green-500/20 border border-green-500/50' :
+                        isCurrent ? 'bg-yellow-500/20 border border-yellow-500/50' :
+                          'bg-gray-500/20'
                       }`}>
-                        {isCompleted ? '✓' : 
-                         isCurrent ? '🎯' : 
-                         isLocked ? '🔒' : index + 1}
+                      <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center mr-3 md:mr-4 font-bold text-sm ${isCompleted ? 'bg-green-500 text-white' :
+                          isCurrent ? 'bg-yellow-500 text-black' :
+                            'bg-gray-600 text-gray-400'
+                        }`}>
+                        {isCompleted ? '✓' :
+                          isCurrent ? '🎯' :
+                            isLocked ? '🔒' : index + 1}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className={`font-bold text-sm md:text-base truncate ${isLocked ? 'text-gray-400' : 'text-white'}`}>
