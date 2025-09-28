@@ -29,6 +29,10 @@ const PythonLearningGame = () => {
     timeFreeze: 0,
     hintBoost: 0
   });
+  const [showFeedback, setShowFeedback] = useState(null);
+  const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [screenShake, setScreenShake] = useState(false);
+  const [showFloatingPoints, setShowFloatingPoints] = useState([]);
 
   const levels = [
     {
@@ -249,7 +253,6 @@ const PythonLearningGame = () => {
     }
   }, [xp, playerLevel]);
 
-  // Achievement checking
   const checkAchievements = () => {
     const newAchievements = [];
     
@@ -280,13 +283,54 @@ const PythonLearningGame = () => {
     setLives(prev => prev - 1);
     setCombo(0);
     setStreak(0);
+    triggerFeedback(false, "⏰ Time's up! You need to be faster!");
     setOutput("Time's up! ⏰");
     
     if (lives <= 1) {
-      setGameState('lost');
+      setTimeout(() => setGameState('lost'), 1500);
     } else {
       resetTimer();
     }
+  };
+
+  const showFloatingPoint = (points, type = 'points') => {
+    const id = Date.now() + Math.random();
+    const newFloatingPoint = {
+      id,
+      points,
+      type,
+      x: Math.random() * 200 - 100,
+      y: 0
+    };
+    
+    setShowFloatingPoints(prev => [...prev, newFloatingPoint]);
+    
+    setTimeout(() => {
+      setShowFloatingPoints(prev => prev.filter(fp => fp.id !== id));
+    }, 2000);
+  };
+
+  const triggerFeedback = (isCorrect, message = '') => {
+    if (isCorrect) {
+      setShowFeedback('success');
+      setFeedbackMessage(message || '🎉 Correct! Well done!');
+      if (soundEnabled) {
+        console.log('🔊 Success sound effect');
+      }
+    } else {
+      setShowFeedback('wrong');
+      setFeedbackMessage(message || '❌ Wrong answer! Try again!');
+      setScreenShake(true);
+      if (soundEnabled) {
+        console.log('🔊 Error sound effect');
+      }
+      setTimeout(() => setScreenShake(false), 600);
+    }
+    
+    setTimeout(() => {
+      setShowFeedback(null);
+      setFeedbackMessage('');
+    }, isCorrect ? 2000 : 3000);
   };
 
   const resetTimer = () => {
@@ -336,9 +380,17 @@ const PythonLearningGame = () => {
       const timeBonus = Math.max(0, timeLeft * 2);
       const earnedPoints = Math.floor((currentChallenge.points + timeBonus) * bonusMultiplier);
       const earnedCoins = currentChallenge.coins + (combo * 2);
+      const xpEarned = currentChallenge.xpReward * (powerUps.doubleXP > 0 ? 2 : 1);
+      
+      // showFloatingPoint(`+${earnedPoints}`, 'points');
+      // showFloatingPoint(`+${earnedCoins}`, 'coins');
+      // showFloatingPoint(`+${xpEarned}`, 'xp');
+      // if (combo > 0) {
+      //   showFloatingPoint(`${combo + 1}x COMBO!`, 'combo');
+      // }
       
       setScore(prev => prev + earnedPoints);
-      setXp(prev => prev + currentChallenge.xpReward * (powerUps.doubleXP > 0 ? 2 : 1));
+      setXp(prev => prev + xpEarned);
       setCoins(prev => prev + earnedCoins);
       setCombo(prev => prev + 1);
       setStreak(prev => {
@@ -346,7 +398,19 @@ const PythonLearningGame = () => {
         setBestStreak(current => Math.max(current, newStreak));
         return newStreak;
       });
+      
+      const successMessages = [
+        '🎉 Excellent! You\'re a coding wizard!',
+        '✨ Perfect! Your Python skills are growing!',
+        '🔥 Amazing! Keep up the great work!',
+        '🌟 Fantastic! You nailed it!',
+        '⚡ Brilliant! Python mastery in progress!',
+        '🎯 Bull\'s eye! Coding like a pro!'
+      ];
+      const randomMessage = successMessages[Math.floor(Math.random() * successMessages.length)];
+      
       setOutput(currentChallenge.expectedOutput + ' ✨');
+      triggerFeedback(true, randomMessage);
       
       if (powerUps.doubleXP > 0) {
         setPowerUps(prev => ({ ...prev, doubleXP: prev.doubleXP - 1 }));
@@ -363,15 +427,27 @@ const PythonLearningGame = () => {
         } else {
           setGameState('won');
         }
-      }, 2000);
+      }, 2500);
     } else {
       setLives(prev => prev - 1);
       setCombo(0);
       setStreak(0);
+      
+      const wrongMessages = [
+        '❌ Not quite right! Think it through again!',
+        '🤔 Close, but not correct! Give it another try!',
+        '💭 Hmm, that\'s not it! Check your logic!',
+        '🎯 Almost there! Review the hint and try again!',
+        '📚 Keep learning! You\'ll get it next time!',
+        '⚠️ Oops! Double-check your answer!'
+      ];
+      const randomMessage = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
+      
       setOutput('Try again! ❌');
+      triggerFeedback(false, randomMessage);
       
       if (lives <= 1) {
-        setGameState('lost');
+        setTimeout(() => setGameState('lost'), 1500);
       }
     }
   };
@@ -395,7 +471,6 @@ const PythonLearningGame = () => {
   const currentChallenge = levels[currentLevel] || levels[0];
   const xpProgress = (xp / (playerLevel * 100)) * 100;
 
-  // Achievement Modal
   if (showAchievement) {
     return (
       <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
@@ -409,7 +484,6 @@ const PythonLearningGame = () => {
     );
   }
 
-  // Level Up Modal
   if (showLevelUp) {
     return (
       <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
@@ -423,7 +497,6 @@ const PythonLearningGame = () => {
     );
   }
 
-  // Victory Screen
   if (gameState === 'won') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-yellow-600 flex items-center justify-center p-4">
@@ -452,7 +525,6 @@ const PythonLearningGame = () => {
     );
   }
 
-  // Game Over Screen
   if (gameState === 'lost') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-900 via-gray-800 to-black flex items-center justify-center p-4">
@@ -476,8 +548,60 @@ const PythonLearningGame = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white">
-      {/* Mobile Header */}
+    <div className={`min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white ${screenShake ? 'animate-pulse' : ''}`}>
+      {showFloatingPoints.map((fp) => (
+        <div
+          key={fp.id}
+          className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50 font-bold text-2xl animate-bounce
+            ${fp.type === 'points' ? 'text-yellow-400' :
+              fp.type === 'coins' ? 'text-green-400' :
+              fp.type === 'xp' ? 'text-purple-400' :
+              'text-orange-400'
+            }`}
+          style={{
+            transform: `translate(${fp.x}px, ${fp.y - 50}px)`,
+            animation: 'floatUp 2s ease-out forwards'
+          }}
+        >
+          {fp.points}
+        </div>
+      ))}
+
+      {showFeedback && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-40 pointer-events-none">
+          <div className={`text-center p-8 rounded-3xl max-w-lg mx-4 animate-bounce relative
+            ${showFeedback === 'success' 
+              ? 'bg-gradient-to-r from-green-500 to-emerald-500 shadow-green-500/50' 
+              : 'bg-gradient-to-r from-red-500 to-rose-500 shadow-red-500/50'
+            } shadow-2xl`}>
+            <div className={`text-6xl md:text-8xl mb-4 
+              ${showFeedback === 'success' ? 'animate-spin' : 'animate-pulse'}`}>
+              {showFeedback === 'success' ? '🎉' : '❌'}
+            </div>
+            <h2 className={`text-2xl md:text-4xl font-bold mb-4 text-white
+              ${showFeedback === 'success' ? '' : 'animate-pulse'}`}>
+              {showFeedback === 'success' ? 'CORRECT!' : 'WRONG ANSWER!'}
+            </h2>
+            <p className="text-lg md:text-xl text-white/90">
+              {feedbackMessage}
+            </p>
+            
+            {showFeedback === 'success' && (
+              <>
+                <div className="absolute -top-4 -left-4 text-yellow-400 text-3xl animate-bounce">⭐</div>
+                <div className="absolute -top-2 -right-6 text-yellow-400 text-2xl animate-bounce">✨</div>
+                <div className="absolute -bottom-4 -left-2 text-yellow-400 text-4xl animate-bounce">🌟</div>
+                <div className="absolute -bottom-2 -right-4 text-yellow-400 text-2xl animate-bounce">⚡</div>
+              </>
+            )}
+            
+            {showFeedback === 'wrong' && (
+              <div className="absolute inset-0 border-4 border-red-400 rounded-3xl animate-pulse"></div>
+            )}
+          </div>
+        </div>
+      )}
+      
       <div className="bg-black/20 backdrop-blur-sm p-3 md:p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
@@ -494,7 +618,6 @@ const PythonLearningGame = () => {
             </h1>
           </div>
           
-          {/* Desktop Stats */}
           <div className="hidden md:flex items-center space-x-6">
             <div className="bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-3 rounded-full">
               <span className="text-lg font-bold">Hero Level {playerLevel}</span>
@@ -523,7 +646,6 @@ const PythonLearningGame = () => {
             </div>
           </div>
 
-          {/* Mobile Stats */}
           <div className="flex md:hidden items-center space-x-2">
             <div className="text-center">
               <div className="text-xs text-gray-300">Score</div>
@@ -536,7 +658,6 @@ const PythonLearningGame = () => {
           </div>
         </div>
 
-        {/* Mobile Stats Bar */}
         <div className="md:hidden mt-3 flex justify-between text-sm">
           <div className="flex items-center">
             <span className="mr-2">Level {playerLevel}</span>
@@ -554,7 +675,6 @@ const PythonLearningGame = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {showMobileMenu && (
         <div className="md:hidden fixed inset-0 bg-black/80 z-40 flex">
           <div className="bg-gray-900 w-80 p-6 space-y-4">
@@ -594,7 +714,6 @@ const PythonLearningGame = () => {
       )}
 
       <div className="max-w-7xl mx-auto p-3 md:p-8">
-        {/* Timer and Level Info */}
         <div className="mb-4 md:mb-6 flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
           <div className="text-center md:text-left">
             <h2 className="text-lg md:text-2xl font-bold">{currentChallenge.title}</h2>
@@ -615,11 +734,9 @@ const PythonLearningGame = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
-          {/* Challenge Panel */}
           <div className="lg:col-span-2 bg-white/10 backdrop-blur-lg rounded-2xl md:rounded-3xl p-4 md:p-8">
             <p className="text-base md:text-xl mb-4 md:mb-8">{currentChallenge.question}</p>
 
-            {/* Challenge Input */}
             {currentChallenge.type === 'fill_blank' ? (
               <div className="space-y-4 md:space-y-6">
                 <div className="bg-gray-900/50 p-3 md:p-6 rounded-xl md:rounded-2xl font-mono text-green-300 text-sm md:text-lg overflow-x-auto">
@@ -635,10 +752,10 @@ const PythonLearningGame = () => {
                 />
                 <button
                   onClick={() => handleAnswer(selectedAnswer)}
-                  className="w-full bg-green-600 hover:bg-green-700 px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold text-base md:text-xl transition-colors flex items-center justify-center"
+                  className="w-full bg-green-600 hover:bg-green-700 px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold text-base md:text-xl transition-all duration-200 flex items-center justify-center transform hover:scale-105 active:scale-95"
                 >
                   <Play className="w-5 h-5 md:w-6 md:h-6 mr-2 md:mr-3" />
-                  Cast Spell
+                  Cast Spell ✨
                 </button>
               </div>
             ) : (
@@ -655,7 +772,6 @@ const PythonLearningGame = () => {
               </div>
             )}
 
-            {/* Hint Section */}
             <div className="mt-4 md:mt-6 space-y-3">
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
@@ -684,7 +800,7 @@ const PythonLearningGame = () => {
               </div>
 
               {showHint && (
-                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 animate-slideDown">
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4">
                   <p className="text-yellow-200 flex items-start">
                     <span className="mr-2 mt-1">💡</span>
                     <span>{currentChallenge.hint}</span>
@@ -694,9 +810,7 @@ const PythonLearningGame = () => {
             </div>
           </div>
 
-          {/* Right Panel */}
           <div className="space-y-4 md:space-y-6">
-            {/* Output */}
             <div className="bg-black/40 backdrop-blur-lg rounded-2xl overflow-hidden">
               <div className="bg-gray-800/50 px-4 md:px-6 py-3">
                 <span className="text-base md:text-lg font-bold">✨ Magic Output</span>
@@ -708,7 +822,6 @@ const PythonLearningGame = () => {
               </div>
             </div>
 
-            {/* Power-up Shop */}
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 md:p-6">
               <h3 className="text-lg md:text-xl font-bold mb-4">🏪 Power-up Shop</h3>
               <div className="space-y-3">
@@ -765,7 +878,6 @@ const PythonLearningGame = () => {
               </div>
             </div>
 
-            {/* Progress */}
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 md:p-6">
               <h3 className="text-lg md:text-2xl font-bold mb-4">🗺️ Quest Progress</h3>
               <div className="space-y-2 md:space-y-3 max-h-64 overflow-y-auto">
@@ -804,7 +916,6 @@ const PythonLearningGame = () => {
               </div>
             </div>
 
-            {/* Stats */}
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 md:p-6">
               <h3 className="text-lg md:text-xl font-bold mb-4">📊 Stats</h3>
               <div className="grid grid-cols-2 gap-3 text-center">
@@ -830,7 +941,6 @@ const PythonLearningGame = () => {
         </div>
       </div>
 
-      {/* Combo Display */}
       {combo > 1 && (
         <div className="fixed top-1/2 right-4 md:right-8 transform -translate-y-1/2 bg-gradient-to-r from-orange-500 to-red-500 px-4 md:px-8 py-3 md:py-4 rounded-full animate-bounce z-10">
           <div className="flex items-center text-white font-bold text-lg md:text-2xl">
@@ -840,7 +950,6 @@ const PythonLearningGame = () => {
         </div>
       )}
 
-      {/* Time Warning */}
       {timeLeft <= 10 && timeLeft > 0 && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 px-6 py-3 rounded-full animate-pulse z-10">
           <div className="text-white font-bold text-xl">
