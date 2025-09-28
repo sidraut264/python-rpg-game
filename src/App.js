@@ -9,7 +9,7 @@ const PythonLearningGame = () => {
   const [playerLevel, setPlayerLevel] = useState(1);
   const [xp, setXp] = useState(0);
   const [combo, setCombo] = useState(0);
-  const [gameState, setGameState] = useState('playing');
+  const [gameState, setGameState] = useState('welcome');
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [output, setOutput] = useState('');
@@ -377,26 +377,26 @@ const PythonLearningGame = () => {
       timeLimit: 75
     },
     {
-  id: 20,
-  title: "MCQ: If Else",
-  world: "🐉 Dragon's Lair",
-  difficulty: "⭐⭐⭐",
-  type: "multiple_choice",
-  question: "Which code correctly prints 'Even' if number % 2 == 0, else prints 'Odd'?",
-  options: [
-    "if number % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')",
-    "if number % 2 == 0: print('Even') else: print('Odd')",
-    "if number % 2 == 0 then: print('Even') else: print('Odd')",
-    "if number % 2 == 0: print('Even') otherwise: print('Odd')"
-  ],
-  correctIndex: 0,
-  expectedOutput: "Even  // if number is divisible by 2\nOdd   // if number is not divisible by 2",
-  hint: "In Python, else must be on a new line after the if block.",
-  points: 190,
-  xpReward: 56,
-  coins: 36,
-  timeLimit: 75
-},
+      id: 20,
+      title: "MCQ: If Else",
+      world: "🐉 Dragon's Lair",
+      difficulty: "⭐⭐⭐",
+      type: "multiple_choice",
+      question: "Which code correctly prints 'Even' if number % 2 == 0, else prints 'Odd'?",
+      options: [
+        "if number % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')",
+        "if number % 2 == 0: print('Even') else: print('Odd')",
+        "if number % 2 == 0 then: print('Even') else: print('Odd')",
+        "if number % 2 == 0: print('Even') otherwise: print('Odd')"
+      ],
+      correctIndex: 0,
+      expectedOutput: "Even  // if number is divisible by 2\nOdd   // if number is not divisible by 2",
+      hint: "In Python, else must be on a new line after the if block.",
+      points: 190,
+      xpReward: 56,
+      coins: 36,
+      timeLimit: 75
+    },
 
 
     // 21-25: Logic & Functions
@@ -813,6 +813,11 @@ const PythonLearningGame = () => {
     }
   };
 
+  const startGame = () => {
+    setGameState('playing');
+    resetTimer();
+  };
+
   const resetGame = () => {
     setCurrentLevel(0);
     setScore(0);
@@ -822,7 +827,7 @@ const PythonLearningGame = () => {
     setXp(0);
     setCombo(0);
     setStreak(0);
-    setGameState('playing');
+    setGameState('welcome');
     setSelectedAnswer('');
     setOutput('');
     setHintsRemaining(3);
@@ -831,6 +836,81 @@ const PythonLearningGame = () => {
 
   const currentChallenge = levels[currentLevel] || levels[0];
   const xpProgress = (xp / (playerLevel * 100)) * 100;
+
+  // Welcome Screen
+  if (gameState === 'welcome') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4">
+        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-10 text-center text-white max-w-md w-full relative overflow-hidden">
+
+          {/* Animated background elements */}
+          <div className="absolute -top-8 -left-8 w-16 h-16 bg-yellow-400/20 rounded-full animate-bounce"></div>
+          <div className="absolute -top-4 -right-6 w-12 h-12 bg-purple-400/20 rounded-full animate-bounce delay-300"></div>
+          <div className="absolute -bottom-8 -left-6 w-10 h-10 bg-green-400/20 rounded-full animate-bounce delay-500"></div>
+          <div className="absolute -bottom-6 -right-8 w-20 h-20 bg-pink-400/20 rounded-full animate-bounce delay-700"></div>
+
+          {/* Main content */}
+          <div className="relative z-10 flex flex-col items-center justify-center h-full">
+
+            <div className="flex items-center justify-center mb-6">
+              <Zap className="w-16 h-16 md:w-20 md:h-20 mr-3 text-yellow-400 animate-pulse" />
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                PyQuest
+              </h1>
+            </div>
+
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-yellow-300">
+              🐍 RPG Adventure 🎮
+            </h2>
+
+            <p className="text-base md:text-lg mb-6 text-gray-300 leading-relaxed">
+              Embark on an epic coding journey! Master Python magic through
+              <span className="text-yellow-400 font-bold"> 10 challenging quests</span>. Level up your hero, collect coins, and unlock achievements!
+            </p>
+
+            {/* Feature highlights */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6 w-full">
+              <div className="bg-purple-500/20 p-3 rounded-lg border border-purple-500/30 flex flex-col items-center">
+                <div className="text-3xl mb-1">🏝️</div>
+                <h3 className="font-bold text-yellow-300 text-sm md:text-base">Epic Worlds</h3>
+                <p className="text-xs md:text-sm text-gray-300 text-center">From Beginner Island to Sky Temple</p>
+              </div>
+              <div className="bg-blue-500/20 p-3 rounded-lg border border-blue-500/30 flex flex-col items-center">
+                <div className="text-3xl mb-1">⚡</div>
+                <h3 className="font-bold text-yellow-300 text-sm md:text-base">Power-ups</h3>
+                <p className="text-xs md:text-sm text-gray-300 text-center">Extra lives, time freeze & more!</p>
+              </div>
+              <div className="bg-green-500/20 p-3 rounded-lg border border-green-500/30 flex flex-col items-center">
+                <div className="text-3xl mb-1">🏆</div>
+                <h3 className="font-bold text-yellow-300 text-sm md:text-base">Achievements</h3>
+                <p className="text-xs md:text-sm text-gray-300 text-center">Unlock legendary rewards</p>
+              </div>
+            </div>
+
+            {/* Start button */}
+            <button
+              onClick={startGame}
+              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-lg md:text-xl transition-transform duration-200 transform hover:scale-105 active:scale-95 shadow-lg flex items-center"
+            >
+              <Play className="w-6 h-6 md:w-7 md:h-7 mr-2" />
+              🚀 Start Your Quest!
+            </button>
+
+            {/* Subtitle */}
+            <p className="text-sm md:text-base text-gray-400 mt-4">
+              Ready to become a Python wizard? Click above to begin your adventure!
+            </p>
+
+            {/* Minimal animated sparkles */}
+            <div className="absolute top-1/4 left-1/4 text-yellow-400 text-xl animate-ping">✨</div>
+            <div className="absolute top-1/3 right-1/4 text-purple-400 text-lg animate-ping delay-500">⭐</div>
+            <div className="absolute bottom-1/4 left-1/3 text-pink-400 text-2xl animate-ping delay-1000">🌟</div>
+            <div className="absolute bottom-1/3 right-1/3 text-green-400 text-lg animate-ping delay-700">✨</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (showAchievement) {
     return (
@@ -1249,12 +1329,12 @@ const PythonLearningGame = () => {
 
                   return (
                     <div key={level.id} className={`flex items-center p-2 md:p-3 rounded-xl transition-colors ${isCompleted ? 'bg-green-500/20 border border-green-500/50' :
-                        isCurrent ? 'bg-yellow-500/20 border border-yellow-500/50' :
-                          'bg-gray-500/20'
+                      isCurrent ? 'bg-yellow-500/20 border border-yellow-500/50' :
+                        'bg-gray-500/20'
                       }`}>
                       <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center mr-3 md:mr-4 font-bold text-sm ${isCompleted ? 'bg-green-500 text-white' :
-                          isCurrent ? 'bg-yellow-500 text-black' :
-                            'bg-gray-600 text-gray-400'
+                        isCurrent ? 'bg-yellow-500 text-black' :
+                          'bg-gray-600 text-gray-400'
                         }`}>
                         {isCompleted ? '✓' :
                           isCurrent ? '🎯' :
@@ -1304,7 +1384,7 @@ const PythonLearningGame = () => {
         <div className="fixed top-1/2 right-4 md:right-8 transform -translate-y-1/2 bg-gradient-to-r from-orange-500 to-red-500 px-4 md:px-8 py-3 md:py-4 rounded-full animate-bounce z-10">
           <div className="flex items-center text-white font-bold text-lg md:text-2xl">
             <Flame className="w-6 h-6 md:w-8 md:h-8 mr-2 md:mr-3" />
-            {combo}x COMBO! 🔥
+            {combo}x
           </div>
         </div>
       )}
